@@ -50,4 +50,5 @@ You can also clear the data stored in the device:
 
 - [Adaruit Fritzing-Library](https://github.com/adafruit/Fritzing-Library)
 - [Ultra low-power sleep with @TXInstruments TPL5110](https://www.youtube.com/watch?v=-cRiN8sxQ5k)
+- [Help with using Adafruit TPL5110 Low Power Timer Breakout?](https://forums.adafruit.com/viewtopic.php?t=201491)
 

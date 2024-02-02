@@ -24,9 +24,9 @@ class Network
     WebServer _server;
     Css _css;
     
-    String renderReloads();
+    String getLogs();
     String renderLogs();
-    String renderPage();
+    String renderWifiSettings();
     String renderJS();
 
     void restore();

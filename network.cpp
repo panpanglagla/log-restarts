@@ -51,7 +51,7 @@ boolean Network::connect() {
     MDNS.addService("http", "tcp", 80);
     
     _server.on("/", HTTP_GET, [=]() {
-      _server.send(200, "text/html", renderReloads());
+      _server.send(200, "text/html", renderLogs());
     });
 
     _server.on("/js", HTTP_GET, [=]() {
@@ -63,7 +63,7 @@ boolean Network::connect() {
     });
 
     _server.on("/logs", HTTP_GET, [=]() {
-      _server.send(200, "text/html", renderLogs());
+      _server.send(200, "text/html", getLogs());
     });
 
     _server.on("/logs", HTTP_DELETE, [=]() {
@@ -110,7 +110,7 @@ boolean Network::startAP() {
   MDNS.addService("http", "tcp", 80);
 
   _server.on("/", HTTP_GET, [=]() {
-    _server.send(200, "text/html", renderPage());
+    _server.send(200, "text/html", renderWifiSettings());
   });
 
   _server.on("/wifi", HTTP_POST, [=]() {
@@ -174,7 +174,6 @@ String Network::renderJS() {
   str.concat("    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {\n");
   str.concat("      const response = JSON.parse(xhr.responseText);\n");
   str.concat("      const container = document.querySelector(\"#container\");\n");
-  str.concat("      container.classList.add(\"pad\");\n");
   str.concat("      const logs = makeElement(\"div\", \"f col g\");\n");
   str.concat("      container.appendChild(logs);\n");
   str.concat("      for(var i = 0 ; i < response.length ; i++){\n");
@@ -228,7 +227,7 @@ String Network::renderJS() {
   return str;
 }
 
-String Network::renderPage() {
+String Network::renderWifiSettings() {
   int num = getWifiCount();
   String str = "";
   str.concat("<html>\n");
@@ -286,7 +285,7 @@ String Network::renderPage() {
   return str;
 }
 
-String Network::renderLogs() {
+String Network::getLogs() {
 
   String timeCodes = _appSettings.getString("RESTARTS", "");
   StringSplitter* splitterLogs = new StringSplitter(timeCodes, ';', 100);
@@ -307,7 +306,7 @@ String Network::renderLogs() {
   return str;
 }
 
-String Network::renderReloads() {
+String Network::renderLogs() {
   String str = "";
   str.concat("<html>\n");
   str.concat("  <head>\n");
@@ -317,18 +316,15 @@ String Network::renderReloads() {
   str.concat("    <script type=\"text/javascript\" src=\"js\"></script>\n");
   str.concat("  </head>\n");
   str.concat("  <body>\n");
-
-  str.concat("  <div class=\"mar\">\n");
-  str.concat("    <button class=\"radius border border-gray-d red pointer fs-xl b white\" title=\"Delete wifi credentials\" onclick=\"deleteWifis();\">\n");
-  str.concat("      Delete wifi credentials");
-  str.concat("    </button>\n");
-  str.concat("    <button class=\"radius border border-gray-d red pointer fs-xl b white\" title=\"Delete logs\" onclick=\"deleteLogs();\">\n");
-  str.concat("      Delete restart logs");
-  str.concat("    </button>\n");
-  str.concat("  </div>\n");
-
-
-  str.concat("    <div id=\"container\">\n");
+  str.concat("    <div class=\"mar f\">\n");
+  str.concat("      <button class=\"radius border border-gray-d red pointer fs-xl b white\" title=\"Delete wifi credentials\" onclick=\"deleteWifis();\">\n");
+  str.concat("        Delete wifi credentials");
+  str.concat("      </button>\n");
+  str.concat("      <button class=\"radius border border-gray-d red pointer fs-xl b white\" title=\"Delete logs\" onclick=\"deleteLogs();\">\n");
+  str.concat("        Delete restart logs");
+  str.concat("      </button>\n");
+  str.concat("    </div>\n");
+  str.concat("    <div id=\"container\" class=\"pad f\">\n");
   str.concat("    </div>\n");
   str.concat("    <script type=\"text/javascript\">\n");
   str.concat("      getLogs();\n");
